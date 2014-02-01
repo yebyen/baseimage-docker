@@ -17,6 +17,17 @@ Baseimage-docker is available for pulling from on [the Docker registry](https://
  * [Rationale](#rationale)
    * [What are the problems with the stock Ubuntu base image?](#problems_with_stock_image)
    * [Why use baseimage-docker?](#why_use)
+ * [What's inside the image?](#whats_inside)
+   * [Overview](#whats_inside_overview)
+   * [Wait, I thought Docker is about running a single process in a container?](#docker_single_process)
+ * [Inspecting baseimage-docker](#inspecting)
+ * [Using baseimage-docker as base image](#using)
+   * [Getting started](#getting_started)
+   * [Adding additional daemons](#adding_additional_daemons)
+   * [Running scripts during container startup](#running_startup_scripts)
+   * [Login to the container](#login)
+ * [Building the image yourself](#building)
+ * [Conclusion](#conclusion)
 
 -----------------------------------------
 
@@ -40,7 +51,11 @@ You can configure the stock `ubuntu` image yourself from your Dockerfile, so why
  * It reduces the time needed to run `docker build`, allowing you to iterate your Dockerfile more quickly.
  * It reduces download time during redeploys. Docker only needs to download the base image once: during the first deploy. On every subsequent deploys, only the changes you make on top of the base image are downloaded.
 
-## Contents
+<a name="whats_inside"></a>
+## What's inside the image?
+
+<a name="whats_inside_overview"></a>
+### Overview
 
 *Looking for a more complete base image, one that is ideal for Ruby, Python, Node.js and Meteor web apps? Take a look at [passenger-docker](https://github.com/phusion/passenger-docker).*
 
@@ -57,12 +72,14 @@ You can configure the stock `ubuntu` image yourself from your Dockerfile, so why
 
 Baseimage-docker is very lightweight: it only consumes 6 MB of memory.
 
+<a name="docker_single_process"></a>
 ### Wait, I thought Docker is about running a single process in a container?
 
 Absolutely not true. Docker runs fine with multiple processes in a container. In fact, there is no technical reason why you should limit yourself to one process - it only makes things harder for you and breaks all kinds of essential system functionality, e.g. syslog.
 
 Baseimage-docker *encourages* multiple processes through the use of runit.
 
+<a name="inspecting"></a>
 ## Inspecting baseimage-docker
 
 To look around in the image, run:
@@ -71,7 +88,11 @@ To look around in the image, run:
 
 You don't have to download anything manually. The above command will automatically pull the baseimage-docker image from the Docker registry.
 
+<a name="using"></a>
 ## Using baseimage-docker as base image
+
+<a name="getting_started"></a>
+### Getting started
 
 The image is called `phusion/baseimage`, and is available on the Docker registry.
 
@@ -102,6 +123,7 @@ By default, it allows SSH access for the key in `image/insecure_key`. This makes
     # Clean up APT when done.
     RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+<a name="adding_additional_daemons"></a>
 ### Adding additional daemons
 
 You can add additional daemons to the image by creating runit entries. You only have to write a small shell script which runs your daemon, and runit will keep it up and running for you, restarting it when it crashes, etc.
@@ -122,6 +144,7 @@ Here's an example showing you how to a memached server runit entry can be made.
 
 Note that the shell script must run the daemon **without letting it daemonize/fork it**. Usually, daemons provide a command line flag or a config file option for that.
 
+<a name="running_startup_scripts"></a>
 ### Running scripts during container startup
 
 The baseimage-docker init system, `/sbin/my_init`, runs the following scripts during startup, in the following order:
@@ -141,6 +164,7 @@ The following example shows how you can add a startup script. This script simply
     RUN mkdir -p /etc/my_init.d
     ADD logtime.sh /etc/my_init.d/logtime.sh
 
+<a name="login"></a>
 ### Login to the container
 
 You can use SSH to login to any container that is based on baseimage-docker.
@@ -161,6 +185,7 @@ Now SSH into the container. In this example we're using [the default insecure ke
 
     ssh -i insecure_key root@<IP address>
 
+<a name="building"></a>
 ## Building the image yourself
 
 If for whatever reason you want to build the image yourself instead of downloading it from the Docker registry, follow these instructions.
@@ -184,6 +209,7 @@ If you want to call the resulting image something else, pass the NAME variable, 
 
     make build NAME=joe/baseimage
 
+<a name="conclusion"></a>
 ## Conclusion
 
  * Using baseimage-docker? [Tweet about us](https://twitter.com/share) or [follow us on Twitter](https://twitter.com/phusion_nl).
