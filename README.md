@@ -29,6 +29,7 @@ You can configure the stock `ubuntu` image yourself from your Dockerfile, so why
   [Twitter](https://twitter.com/phusion_nl) |
   [Blog](http://blog.phusion.nl/)
 
+<a name="#toc"></a>
 **Table of contents**
 
  * [What's inside the image?](#whats_inside)
