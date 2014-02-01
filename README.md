@@ -4,17 +4,33 @@ Baseimage-docker is a special [Docker](http://www.docker.io) image that is confi
 
 Baseimage-docker is available for pulling from on [the Docker registry](https://index.docker.io/u/phusion/baseimage/)!
 
- * **Github**: https://github.com/phusion/baseimage-docker
- * **Discussion forum**: https://groups.google.com/d/forum/passenger-docker
- * **Twitter**: https://twitter.com/phusion_nl
- * **Blog**: http://blog.phusion.nl/
+**Related resources**:
+  [Github](https://github.com/phusion/baseimage-docker) |
+  [Discussion forum](https://groups.google.com/d/forum/passenger-docker) |
+  [Twitter](https://twitter.com/phusion_nl)
+  [Blog](http://blog.phusion.nl/)
 
+-----------------------------------------
+
+**Table of contents**
+
+ * [Rationale](#rationale)
+   * [What are the problems with the stock Ubuntu base image?](#problems_with_stock_image)
+   * [Why use baseimage-docker?](#why_use)
+
+-----------------------------------------
+
+<a name="rationale"></a>
+## Rationale
+
+<a name=">problems_with_stock_image"></a>
 ### What are the problems with the stock Ubuntu base image?
 
 Ubuntu is not designed to be run inside docker. Its init system, Upstart, assumes that it's running on either real hardware or virtualized hardware, but not inside a Docker container. But inside a container you don't want a full system anyway, you want a minimal system. But configuring that minimal system for use within a container has many strange corner cases that are hard to get right if you are not intimately familiar with the Unix system model. This can cause a lot of strange problems.
 
 Baseimage-docker gets everything right. The "Contents" section describes all the things that it modifies.
 
+<a name="why_use"></a>
 ### Why use baseimage-docker?
 
 You can configure the stock `ubuntu` image yourself from your Dockerfile, so why bother using baseimage-docker?
